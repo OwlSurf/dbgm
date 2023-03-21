@@ -18,9 +18,8 @@ TEST(ERROR_PRINT, Some_error_format_str)
     testing::internal::CaptureStdout();
 	std::cout << ERROR_PRINT("%s\r\n","Some error happend!");
 	std::string output = testing::internal::GetCapturedStdout();
-	ASSERT_STREQ(output.c_str(), "\033[0;31mError: Some error happend!\033[0m\r\n39");
+	ASSERT_STREQ(output.c_str(), RED_COLOR "Error: " COLOR_OFF "Some error happend!\r\n39");
 
-	ERROR_PRINT("%s\r\n","Some error happend!");
 }
 
 TEST(ERROR_PRINT, Some_just_error_str)
@@ -28,9 +27,17 @@ TEST(ERROR_PRINT, Some_just_error_str)
     testing::internal::CaptureStdout();
 	std::cout << ERROR_PRINT("Just error happend!\r\n");
 	std::string output = testing::internal::GetCapturedStdout();
-	ASSERT_STREQ(output.c_str(), "\x1B[0;31mError: Just error happend!\r\n\x1B[0m39");
+	ASSERT_STREQ(output.c_str(), "\x1B[0;31mError: \x1B[0mJust error happend!\r\n39");
 
-	ERROR_PRINT("Just error happend!\r\n");
+}
+
+TEST(ERROR_PRINT, Some_format_param_error)
+{
+    testing::internal::CaptureStdout();
+	std::cout << ERROR_PRINT("Error %d\r\n",12);
+	std::string output = testing::internal::GetCapturedStdout();
+	ASSERT_STREQ(output.c_str(), "\x1B[0;31mError: \x1B[0mError 12\r\n28");
+
 }
 
 TEST(LOG_PRINT, Some_log_format_str)
@@ -38,8 +45,7 @@ TEST(LOG_PRINT, Some_log_format_str)
     testing::internal::CaptureStdout();
 	std::cout << LOG_PRINT("%s\r\n","Some Log");
 	std::string output = testing::internal::GetCapturedStdout();
-	ASSERT_STREQ(output.c_str(), "\x1B[0;34mLog: \x1B[0m\x1B[0;36mSome Log\x1B[0m\r\n37");
-	LOG_PRINT("%s\r\n","Some Log");
+	ASSERT_STREQ(output.c_str(), "\x1B[0;34mLog: \x1B[0m\x1B[0;36mSome Log\r\n33" COLOR_OFF);
 }
 
 TEST(LOG_PRINT, Just_log_str)
@@ -47,8 +53,7 @@ TEST(LOG_PRINT, Just_log_str)
     testing::internal::CaptureStdout();
 	std::cout << LOG_PRINT("Just Log\r\n");
 	std::string output = testing::internal::GetCapturedStdout();
-	ASSERT_STREQ(output.c_str(), "\x1B[0;34mLog: \x1B[0m\x1B[0;36mJust Log\r\n\x1B[0m37");
-	LOG_PRINT("Just Log\r\n");
+	ASSERT_STREQ(output.c_str(), "\x1B[0;34mLog: \x1B[0m\x1B[0;36mJust Log\r\n33" COLOR_OFF);
 }
 
 TEST(WARNING_PRINT, Some_warning_format_str)
@@ -56,8 +61,7 @@ TEST(WARNING_PRINT, Some_warning_format_str)
     testing::internal::CaptureStdout();
 	std::cout << WARNING_PRINT("%s\r\n","Some Warning");
 	std::string output = testing::internal::GetCapturedStdout();
-	ASSERT_STREQ(output.c_str(), "\x1B[0;33mWarning:\x1B[0m\x1B[0;36mSome Warning\x1B[0m\r\n44");
-	WARNING_PRINT("%s\r\n","Some Warning");
+	ASSERT_STREQ(output.c_str(), "\x1B[0;33mWarning:\x1B[0m\x1B[0;36mSome Warning\r\n40" COLOR_OFF);
 }
 
 TEST(WARNING_PRINT, Just_warning_str)
@@ -65,8 +69,25 @@ TEST(WARNING_PRINT, Just_warning_str)
     testing::internal::CaptureStdout();
 	std::cout << WARNING_PRINT("Just Warning\r\n");
 	std::string output = testing::internal::GetCapturedStdout();
-	EXPECT_STREQ(output.c_str(), "\x1B[0;33mWarning:\x1B[0m\x1B[0;36mJust Warning\r\n\x1B[0m44");
-	WARNING_PRINT("Just Warning\r\n");
+	EXPECT_STREQ(output.c_str(), "\x1B[0;33mWarning:\x1B[0m\x1B[0;36mJust Warning\r\n40" COLOR_OFF);
 }
 
+TEST(WARNING_PRINT, Warning_format_str_param)
+{
+    testing::internal::CaptureStdout();
+	std::cout << WARNING_PRINT("Number %d\r\n", 45);
+	std::string output = testing::internal::GetCapturedStdout();
+	EXPECT_STREQ(output.c_str(), "\x1B[0;33mWarning:\x1B[0m\x1B[0;36mNumber 45\r\n37" COLOR_OFF);
+}
 
+TEST(PRINT_SHOW, show_all_outputs)
+{
+	ERROR_PRINT("%s\r\n","Some error happend!");
+	ERROR_PRINT("Just error happend!\r\n");
+	ERROR_PRINT("Error 12\r\n");
+	LOG_PRINT("%s\r\n","Some Log");
+	LOG_PRINT("Just Log\r\n");
+	WARNING_PRINT("%s\r\n","Some Warning");
+	WARNING_PRINT("Just Warning\r\n");
+	WARNING_PRINT("Number %d\r\n", 45);
+}
