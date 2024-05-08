@@ -85,9 +85,13 @@ TEST(PRINT_SHOW, show_all_outputs)
 	ERROR_PRINT("%s\r\n","Some error happend!");
 	ERROR_PRINT("Just error happend!\r\n");
 	ERROR_PRINT("Error 12\r\n");
+	ERROR_PRINT("%s: %d, %s: %f\r\n", "Level", 200, "value", 50.34);
+	ERROR_PRINT("%d, %d, %f, %d\r\n", 10, 20, 45.56, 346);
 	LOG_PRINT("%s\r\n","Some Log");
 	LOG_PRINT("Just Log\r\n");
+	LOG_PRINT("%s, %d, %s, %f\r\n", "Deep", 45, "value:", 45.56);
 	WARNING_PRINT("%s\r\n","Some Warning");
 	WARNING_PRINT("Just Warning\r\n");
 	WARNING_PRINT("Number %d\r\n", 45);
+	WARNING_PRINT("%s, %d, %s, %f\r\n", "Max", 45, "Min", 56.78);
 }

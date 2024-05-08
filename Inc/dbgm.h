@@ -6,10 +6,10 @@
  *	\file dbgm.h
  *	\author Roman Garanin owlsurf@mail.ru
  *
- *	(c) Roman Garanin, 2022
+ *	\Copyright Roman Garanin, 2022
  *
  *	Abbreviations:
- *		dbgm - debug messages.	:wq		
+ *		dbgm - debug messages.
  */
 
 
@@ -18,6 +18,8 @@
 #define PRINT printf
 #endif
 
+#define LOG
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -25,10 +27,9 @@ extern "C" {
 #include "stdint.h"
 
 #define CLEAR_SCREEN        "\x1B[2J\x1b[1;1H"
-#define COLOR_OFF           "\033[0m" 
+#define COLOR_OFF           "\033[0m"
 
-		
-#define GREEN_COLOR         "\033[0;32m"	
+#define GREEN_COLOR         "\033[0;32m"
 
 #define GREENOUT(format)       GREEN_COLOR format COLOR_OFF
 #define BLUE_COLOR          "\033[0;34m"	
@@ -48,9 +49,15 @@ extern "C" {
 #define DEBUG_PRINT(...)
 #endif
 
+#ifdef LOG
 #define ERROR_PRINT(...) 	PRINT(REDOUT("Error: ") __VA_ARGS__)
 #define LOG_PRINT(...)		PRINT(BLUEOUT("Log: ") CYAN_COLOR __VA_ARGS__);PRINT(COLOR_OFF)
 #define WARNING_PRINT(...) 	PRINT(YELLOWOUT("Warning:") CYAN_COLOR __VA_ARGS__);PRINT(COLOR_OFF)
+#else
+#define ERROR_PRINT(...)
+#define LOG_PRINT(...)
+#define WARNING_PRINT(...)
+#endif
 
 #ifdef DEBUG
 void print_all_colors();

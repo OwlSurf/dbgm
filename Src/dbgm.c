@@ -11,11 +11,11 @@ enum colors_e {
 	COLOR_MAX
 };
 uint8_t color[COLOR_MAX][8] = {
-	GREEN_COLOR,
-    BLUE_COLOR,	
-	RED_COLOR,	
-	YELLOW_COLOR, 
-	CYAN_COLOR, 
+        GREEN_COLOR,
+        BLUE_COLOR,
+        RED_COLOR,
+	YELLOW_COLOR,
+	CYAN_COLOR,
 	PURPLE_COLOR
 };
 
